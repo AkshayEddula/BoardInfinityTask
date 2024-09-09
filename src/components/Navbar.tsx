@@ -7,15 +7,20 @@ import { MdOutlinePendingActions } from "react-icons/md";
 import { IoCheckmarkDoneCircle } from "react-icons/io5";
 import Image from "next/image";
 import logo from "../app/public/images/logo.svg"
-import { Button } from "@mui/material";
-import React, {useState} from "react";
-import {FaCirclePlus} from "react-icons/fa6";
-import {RxCross1} from "react-icons/rx";
+import React, { useState } from "react";
+import { FaCirclePlus } from "react-icons/fa6";
+import { RxCross1 } from "react-icons/rx";
 import TaskModal from "@/components/TaskModal";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTodos } from "@/contexts/TodoContext";
 
-function Modal({ isOpen, onClose, children }) {
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}
+
+function Modal({ isOpen, onClose, children }: ModalProps) {
     if (!isOpen) return null
 
     return (
@@ -27,13 +32,35 @@ function Modal({ isOpen, onClose, children }) {
     )
 }
 
-export default function Navbar() {
+interface NewTask {
+    title: string;
+    description: string;
+    date: string;
+    status: 'todo' | 'in progress' | 'done';
+    priority: 'low' | 'medium' | 'high';
+}
 
+interface NavItemProps {
+  href: string;
+  icon: React.ReactElement;
+  text: string;
+}
+
+function NavItem({ href, icon, text }: NavItemProps) {
+    return (
+        <Link href={href} className="flex items-center gap-x-2 bg-gray-100 p-2 rounded border shadow-md">
+            {React.cloneElement(icon, { color: "black" })}
+            <p className="text-black">{text}</p>
+        </Link>
+    )
+}
+
+export default function Navbar() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { logOut } = useAuth();
-    const { todos, addTodo, loading } = useTodos()
+    const { addTodo } = useTodos()
 
-    const handleCreateTask = async (newTask) => {
+    const handleCreateTask = async (newTask: NewTask) => {
         await addTodo(newTask)
         setIsModalOpen(false)
     }
@@ -47,10 +74,9 @@ export default function Navbar() {
         }
     }
 
-
-
     return (
-        <div className="bg-white h-full flex flex-col justify-between p-3 rounded-lg">
+        <div className="bg-white h-full flex flex-col justify-between p-3 rounde
+d-lg">
             <div className="flex flex-col gap-y-3">
                 <NavItem href="/dashboard" icon={<IoMdHome/>} text="Home"/>
                 <NavItem href="/todos" icon={<LuListTodo/>} text="Todos"/>
@@ -66,7 +92,7 @@ export default function Navbar() {
             </div>
 
             <div className="flex flex-col gap-y-3">
-                <button onClick={handleLogout}  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 ">
+                <button onClick={handleLogout} className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 ">
                     Logout
                 </button>
                 <div className="flex items-center justify-center">
@@ -89,14 +115,5 @@ export default function Navbar() {
                 />
             </Modal>
         </div>
-    )
-}
-
-function NavItem({href, icon, text}) {
-    return (
-        <Link href={href} className="flex items-center gap-x-2 bg-gray-100 p-2 rounded border shadow-md">
-        {React.cloneElement(icon, { color: "black" })}
-            <p className="text-black">{text}</p>
-        </Link>
     )
 }

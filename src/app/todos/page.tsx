@@ -7,7 +7,13 @@ import { FaCirclePlus } from "react-icons/fa6"
 import { RxCross1 } from "react-icons/rx"
 import { useTodos } from "@/contexts/TodoContext"
 
-function Modal({ isOpen, onClose, children }) {
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}
+
+function Modal({ isOpen, onClose, children }: ModalProps) {
     if (!isOpen) return null
 
     return (
@@ -19,16 +25,34 @@ function Modal({ isOpen, onClose, children }) {
     )
 }
 
+interface Todo {
+    id: string;
+    title: string;
+    description: string;
+    date: string;
+    status: 'todo' | 'in progress' | 'done';
+    priority: 'low' | 'medium' | 'high';
+    userId: string;
+}
+
+interface NewTask {
+    title: string;
+    description: string;
+    date: string;
+    status: 'todo' | 'in progress' | 'done';
+    priority: 'low' | 'medium' | 'high';
+}
+
 export default function TodoPage() {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const { todos, addTodo, loading } = useTodos()
 
-    const handleCreateTask = async (newTask) => {
+    const handleCreateTask = async (newTask: NewTask) => {
         await addTodo(newTask)
         setIsModalOpen(false)
     }
 
-    const todoTasks = todos.filter(todo => todo.status === 'todo')
+    const todoTasks = todos.filter((todo: Todo) => todo.status === 'todo')
 
     if (loading) {
         return <div>Loading...</div>
@@ -58,7 +82,7 @@ export default function TodoPage() {
                             <p className="text-gray-600 text-center">No todos in this category.</p>
                         ) : (
                             <div className="space-y-2">
-                                {todoTasks.map((todo) => (
+                                {todoTasks.map((todo: Todo) => (
                                     <TodoItem key={todo.id} todo={todo} />
                                 ))}
                             </div>

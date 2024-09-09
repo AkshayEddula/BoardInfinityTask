@@ -7,7 +7,13 @@ import { FaCirclePlus } from "react-icons/fa6"
 import { RxCross1 } from "react-icons/rx"
 import { useTodos } from "@/contexts/TodoContext"
 
-function Modal({ isOpen, onClose, children }) {
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}
+
+function Modal({ isOpen, onClose, children }: ModalProps) {
     if (!isOpen) return null
 
     return (
@@ -19,16 +25,34 @@ function Modal({ isOpen, onClose, children }) {
     )
 }
 
-export default function InProgressPage() {
+interface Todo {
+    id: string;
+    title: string;
+    description: string;
+    date: string;
+    status: 'todo' | 'in progress' | 'done';
+    priority: 'low' | 'medium' | 'high';
+    userId: string;
+}
+
+interface NewTask {
+    title: string;
+    description: string;
+    date: string;
+    status: 'todo' | 'in progress' | 'done';
+    priority: 'low' | 'medium' | 'high';
+}
+
+export default function CompletedPage() {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const { todos, addTodo, loading } = useTodos()
 
-    const handleCreateTask = async (newTask) => {
+    const handleCreateTask = async (newTask: NewTask) => {
         await addTodo(newTask)
         setIsModalOpen(false)
     }
 
-    const completedTodos = todos.filter(todo => todo.status === 'done')
+    const completedTodos = todos.filter((todo: Todo) => todo.status === 'done')
 
     if (loading) {
         return <div>Loading...</div>
@@ -58,7 +82,7 @@ export default function InProgressPage() {
                             <p className="text-gray-600 text-center">No todos are currently completed.</p>
                         ) : (
                             <div className="space-y-2">
-                                {completedTodos.map((todo) => (
+                                {completedTodos.map((todo: Todo) => (
                                     <TodoItem key={todo.id} todo={todo} />
                                 ))}
                             </div>
