@@ -26,18 +26,29 @@ function Modal({ isOpen, onClose, children }: ModalProps) {
 }
 
 interface Todo {
-  id: string;
-  title: string;
-  description: string;
-  status: 'todo' | 'in-progress' | 'done';
+    id: string;
+    title: string;
+    description: string;
+    date: string;
+    status: 'todo' | 'in progress' | 'done';
+    priority: 'low' | 'medium' | 'high';
+    userId: string;
 }
 
+interface NewTask {
+    title: string;
+    description: string;
+    date: string;
+    status: 'todo' | 'in progress' | 'done';
+    priority: 'low' | 'medium' | 'high';
+    userId: string;
+}
 
 export default function DashboardPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { todos, addTodo, loading } = useTodos()
 
-  const handleCreateTask = async (newTask) => {
+  const handleCreateTask = async (newTask: NewTask) => {
     await addTodo(newTask)
     setIsModalOpen(false)
   }
