@@ -1,27 +1,34 @@
 'use client'
-import React, { useState } from "react"
+import React, { ReactNode, useState } from "react"
 import Todos from "@/components/Todos"
 import TaskModal from "@/components/TaskModal"
 import { FaCirclePlus } from "react-icons/fa6"
 import { RxCross1 } from "react-icons/rx"
+import { Todo, useTodos } from "@/contexts/TodoContext"
 
-function Modal({ isOpen, onClose, children }) {
+interface ModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    children: ReactNode;
+  }
+
+  function Modal({ isOpen, onClose, children }: ModalProps) {
     if (!isOpen) return null
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-lg p-6 w-full max-w-[700px]">
-                {children}
-            </div>
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg p-6 w-full max-w-[700px]">
+          {children}
         </div>
+      </div>
     )
-}
+  }
 
 export default function DashboardPage() {
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const { todos, addTodo, loading } = useTodos()
+    const { todos, addTodo, loading } = useTodos();
 
-    const handleCreateTask = async (newTask) => {
+    const handleCreateTask = async (newTask: Omit<Todo, "id" | "userId">) => {
         await addTodo(newTask)
         setIsModalOpen(false)
     }
