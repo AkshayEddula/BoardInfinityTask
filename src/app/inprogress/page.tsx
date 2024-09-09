@@ -1,13 +1,19 @@
 'use client'
 
-import React, { useState } from "react"
+import React, { useState, ReactNode } from "react"
 import TodoItem from "@/components/TodoItem"
 import TaskModal from "@/components/TaskModal"
 import { FaCirclePlus } from "react-icons/fa6"
 import { RxCross1 } from "react-icons/rx"
-import { useTodos } from "@/contexts/TodoContext"
+import { Todo, useTodos } from "@/contexts/TodoContext"
 
-function Modal({ isOpen, onClose, children }) {
+interface ModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    children: ReactNode;
+  }
+
+function Modal({ isOpen, onClose, children } : ModalProps) {
     if (!isOpen) return null
 
     return (
@@ -18,12 +24,11 @@ function Modal({ isOpen, onClose, children }) {
         </div>
     )
 }
-
 export default function InProgressPage() {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const { todos, addTodo, loading } = useTodos()
 
-    const handleCreateTask = async (newTask) => {
+    const handleCreateTask = async (newTask: Omit<Todo, "id" | "userId">) => {
         await addTodo(newTask)
         setIsModalOpen(false)
     }
