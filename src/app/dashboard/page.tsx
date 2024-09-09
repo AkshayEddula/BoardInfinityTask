@@ -41,11 +41,10 @@ interface NewTask {
     date: string;
     status: 'todo' | 'in progress' | 'done';
     priority: 'low' | 'medium' | 'high';
-    userId: string;
 }
 
 export default function DashboardPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { todos, addTodo, loading } = useTodos()
 
   const handleCreateTask = async (newTask: NewTask) => {
