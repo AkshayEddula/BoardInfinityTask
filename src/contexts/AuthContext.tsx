@@ -20,12 +20,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
-            setUser(user)
-            setLoading(false)
-        })
+          console.log("Auth state changed:", user ? `User logged in: ${user.uid}` : "No user");
+          setUser(user);
+          setLoading(false);
+        });
 
-        return () => unsubscribe()
-    }, []);
+        return () => unsubscribe();
+      }, []);
 
     const signIn = async (email: string, password: string) => {
         await signInWithEmailAndPassword(auth, email, password);

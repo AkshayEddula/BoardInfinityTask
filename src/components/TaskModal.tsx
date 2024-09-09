@@ -1,25 +1,27 @@
 import React, { useState } from 'react'
+import { Todo } from '@/contexts/TodoContext'
 
 interface TaskFormData {
     title: string
     description: string
     date: string
-    status: 'todo' | 'in progress' | 'done'
-    priority: 'low' | 'medium' | 'high'
+    status: Todo['status']
+    priority: Todo['priority']
 }
 
 interface TaskModalProps {
-    onSubmit: (task: TaskFormData) => void
+    onSubmit: (task: Omit<Todo, 'id' | 'userId'>) => void
     onCancel: () => void
+    initialData?: Partial<Todo>
 }
 
-export default function TaskModal({ onSubmit, onCancel }: TaskModalProps) {
+export default function TaskModal({ onSubmit, onCancel, initialData }: TaskModalProps) {
     const [formData, setFormData] = useState<TaskFormData>({
-        title: '',
-        description: '',
-        date: '',
-        status: 'todo',
-        priority: 'low',
+        title: initialData?.title || '',
+        description: initialData?.description || '',
+        date: initialData?.date || '',
+        status: initialData?.status || 'todo',
+        priority: initialData?.priority || 'low',
     })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -32,6 +34,7 @@ export default function TaskModal({ onSubmit, onCancel }: TaskModalProps) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
+        console.log("Form submitted with data:", formData)
         onSubmit(formData)
     }
 
@@ -104,15 +107,15 @@ export default function TaskModal({ onSubmit, onCancel }: TaskModalProps) {
                 <button
                     type="button"
                     onClick={onCancel}
-                    className="px-4 py-2 border border-[#8a31e5] rounded-md text-sm font-medium text-[#8a31e5] hover:bg-gray-50 focus:outline-none "
+                    className="px-4 py-2 border border-[#8a31e5] rounded-md text-sm font-medium text-[#8a31e5] hover:bg-gray-50 focus:outline-none"
                 >
                     Cancel
                 </button>
                 <button
                     type="submit"
-                    className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#8a31e5] hover:bg-[#9250D6] focus:outline-none "
+                    className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#8a31e5] hover:bg-[#9250D6] focus:outline-none"
                 >
-                    Create
+                    {initialData ? 'Update' : 'Create'}
                 </button>
             </div>
         </form>

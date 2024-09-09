@@ -1,11 +1,11 @@
 'use client'
+
 import React, { useState } from "react"
-import Todos from "@/components/Todos"
+import TodoItem from "@/components/TodoItem"
 import TaskModal from "@/components/TaskModal"
 import { FaCirclePlus } from "react-icons/fa6"
 import { RxCross1 } from "react-icons/rx"
-import todos from "@/contexts/TodoContext";
-import TodoItem from "@/components/TodoItem";
+import { useTodos } from "@/contexts/TodoContext"
 
 function Modal({ isOpen, onClose, children }) {
     if (!isOpen) return null
@@ -19,16 +19,20 @@ function Modal({ isOpen, onClose, children }) {
     )
 }
 
-export default function CompletedPage() {
+export default function InProgressPage() {
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const { todos, addTodo, loading } = useTodos()
 
-    const handleCreateTask = () => {
-        // console.log("New task created:", newTask)
-        // You might want to update the Todos component or refresh the task list here
+    const handleCreateTask = async (newTask) => {
+        await addTodo(newTask)
         setIsModalOpen(false)
     }
 
-    const completedTodos = todos.filter(todo => todo.status === 'completed')
+    const completedTodos = todos.filter(todo => todo.status === 'done')
+
+    if (loading) {
+        return <div>Loading...</div>
+    }
 
     return (
         <div className="p-6 flex flex-col">
@@ -39,7 +43,7 @@ export default function CompletedPage() {
                 <button
                     type="button"
                     onClick={() => setIsModalOpen(true)}
-                    className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 "
+                    className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
                 >
                     Create Task
                 </button>
@@ -47,15 +51,15 @@ export default function CompletedPage() {
             <div className="mt-5">
                 <div className="bg-white rounded-lg shadow-md overflow-hidden mx-auto">
                     <div className="bg-[#06c270] text-[#ffffff] p-3 rounded-t-lg">
-                        <h2 className="text-xl font-medium text-center">COMPLETED</h2>
+                        <h2 className="text-xl font-medium text-center">Completed</h2>
                     </div>
                     <div className="p-3">
                         {completedTodos.length === 0 ? (
-                            <p className="text-gray-600 text-center">No todos are currently in progress.</p>
+                            <p className="text-gray-600 text-center">No todos are currently completed.</p>
                         ) : (
                             <div className="space-y-2">
                                 {completedTodos.map((todo) => (
-                                    <TodoItem key={todo.id} todo={todo}/>
+                                    <TodoItem key={todo.id} todo={todo} />
                                 ))}
                             </div>
                         )}

@@ -4,6 +4,7 @@ import Todos from "@/components/Todos"
 import TaskModal from "@/components/TaskModal"
 import { FaCirclePlus } from "react-icons/fa6"
 import { RxCross1 } from "react-icons/rx"
+import { useTodos } from "@/contexts/TodoContext"
 
 function Modal({ isOpen, onClose, children }) {
     if (!isOpen) return null
@@ -19,10 +20,10 @@ function Modal({ isOpen, onClose, children }) {
 
 export default function DashboardPage() {
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const { todos, addTodo, loading } = useTodos()
 
-    const handleCreateTask = () => {
-        // console.log("New task created:", newTask)
-        // You might want to update the Todos component or refresh the task list here
+    const handleCreateTask = async (newTask) => {
+        await addTodo(newTask)
         setIsModalOpen(false)
     }
 

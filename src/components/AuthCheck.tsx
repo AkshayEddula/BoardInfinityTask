@@ -1,25 +1,26 @@
 'use client'
 
 import { useAuth } from "@/contexts/AuthContext";
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
-export default function AuthCheck({ children }: { children: React.ReactNode }) {
+export default function AuthCheck({ children, excludeRoutes = [] }: { children: React.ReactNode, excludeRoutes?: string[] }) {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login'); // Adjust this to your auth page route
+    if (!loading && !user && !excludeRoutes.includes(pathname)) {
+      router.push('/login');
     }
-  }, [user, loading, router]);
+  }, [user, loading, router, pathname, excludeRoutes]);
 
   if (loading) {
-    return <div>Loading...</div>; // Or your custom loading component
+    return <div>Loading...</div>;
   }
 
-  if (!user) {
-    return null; // This prevents the protected content from flashing before redirect
+  if (!user && !excludeRoutes.includes(pathname)) {
+    return null;
   }
 
   return <>{children}</>;

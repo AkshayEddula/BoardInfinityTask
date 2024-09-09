@@ -13,6 +13,7 @@ import {FaCirclePlus} from "react-icons/fa6";
 import {RxCross1} from "react-icons/rx";
 import TaskModal from "@/components/TaskModal";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTodos } from "@/contexts/TodoContext";
 
 function Modal({ isOpen, onClose, children }) {
     if (!isOpen) return null
@@ -30,10 +31,10 @@ export default function Navbar() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { logOut } = useAuth();
+    const { todos, addTodo, loading } = useTodos()
 
-    const handleCreateTask = () => {
-        // console.log("New task created:", newTask)
-        // You might want to update the Todos component or refresh the task list here
+    const handleCreateTask = async (newTask) => {
+        await addTodo(newTask)
         setIsModalOpen(false)
     }
 
