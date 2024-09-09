@@ -4,7 +4,6 @@ import Todos from "@/components/Todos"
 import TaskModal from "@/components/TaskModal"
 import { FaCirclePlus } from "react-icons/fa6"
 import { RxCross1 } from "react-icons/rx"
-import { useTodos } from "@/contexts/TodoContext"
 
 function Modal({ isOpen, onClose, children }) {
     if (!isOpen) return null
