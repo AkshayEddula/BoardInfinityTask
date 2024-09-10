@@ -19,7 +19,7 @@ export default function LoginPage() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { user, loading, signUp } = useAuth();
+    const { user, loading, signUp, googleSignUp } = useAuth();
     const router = useRouter();
 
     const handleSignUp = async (e: React.FormEvent) => {
@@ -29,6 +29,15 @@ export default function LoginPage() {
             router.push('/');
         } catch (error) {
             console.error('Error signing in', error)
+        }
+    }
+
+    const handleGoogleSignUp = async () => {
+        try {
+            await googleSignUp();
+            router.push('/');
+        } catch (error) {
+            console.error('Error signing Up', error)
         }
     }
 
@@ -89,6 +98,8 @@ export default function LoginPage() {
                     <Divider sx={{ my: 3,'&::before, &::after': { borderColor: 'gray' } }}><Typography color="text.secondary">Or continue with</Typography></Divider>
 
                     <Button
+                        type="button"
+                        onClick={handleGoogleSignUp}
                         fullWidth
                         variant="outlined"
                         startIcon={<GoogleIcon />}

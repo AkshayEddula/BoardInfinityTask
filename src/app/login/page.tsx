@@ -19,13 +19,22 @@ export default function LoginPage() {
 
     const [email, setEmail] = useState('sample@gmail.com')
     const [password, setPassword] = useState('sample')
-    const { user, loading, signIn } = useAuth();
+    const { user, loading, signIn, googleSignIn} = useAuth();
     const router = useRouter();
 
     const handleSignIn = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
             await signIn(email, password);
+            router.push('/');
+        } catch (error) {
+            console.error('Error signing in', error)
+        }
+    }
+
+    const handleGoogleSignIn = async () => {
+        try {
+            await googleSignIn();
             router.push('/');
         } catch (error) {
             console.error('Error signing in', error)
@@ -94,6 +103,8 @@ export default function LoginPage() {
 
                     <Button
                         fullWidth
+                        type="button"
+                        onClick={handleGoogleSignIn}
                         variant="outlined"
                         startIcon={<GoogleIcon />}
                         sx={{ mb: 2 }}
