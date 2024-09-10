@@ -53,7 +53,7 @@ export default function DashboardPage() {
   }
 
   if (loading) {
-    return <div>Loading...</div>
+    return <div className="text-xl font-black">Loading...</div>
   }
 
   return (

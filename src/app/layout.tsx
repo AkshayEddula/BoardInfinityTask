@@ -4,6 +4,8 @@ import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { TodoProvider } from "@/contexts/TodoContext";
 import LayoutContent from "./LayoutContent";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,11 +34,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider>
-            <TodoProvider>
-                <LayoutContent>{children}</LayoutContent>
-            </TodoProvider>
-        </AuthProvider>
+        <Suspense fallback={<Loading />}>
+            <AuthProvider>
+                <TodoProvider>
+                    <LayoutContent>{children}</LayoutContent>
+                </TodoProvider>
+            </AuthProvider>
+        </Suspense>
       </body>
     </html>
   );

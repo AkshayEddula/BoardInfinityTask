@@ -10,6 +10,7 @@ import logo from "../app/public/images/logo.svg"
 import React, { useState } from "react";
 import { FaCirclePlus } from "react-icons/fa6";
 import { RxCross1 } from "react-icons/rx";
+import { MdSpaceDashboard } from "react-icons/md";
 import TaskModal from "@/components/TaskModal";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTodos } from "@/contexts/TodoContext";
@@ -75,10 +76,10 @@ export default function Navbar() {
     }
 
     return (
-        <div className="bg-white h-full flex flex-col justify-between p-3 rounde
-d-lg">
+        <div className="bg-white h-full flex flex-col justify-between p-3 ">
             <div className="flex flex-col gap-y-3">
-                <NavItem href="/dashboard" icon={<IoMdHome/>} text="Home"/>
+                <NavItem href="/" icon={<IoMdHome/>} text="Home"/>
+                <NavItem href="/dashboard" icon={<MdSpaceDashboard />} text="Dashboard"/>
                 <NavItem href="/todos" icon={<LuListTodo/>} text="Todos"/>
                 <NavItem href="/inprogress" icon={<MdOutlinePendingActions/>} text="In Progress"/>
                 <NavItem href="/completed" icon={<IoCheckmarkDoneCircle/>} text="Completed"/>
