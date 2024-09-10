@@ -80,4 +80,4 @@ Contributions to the BoardInfinity Task Management App are welcome. Please follo
 
 AkshayEddula - akshayeddula454@gmail.com
 
-Project Link: [https://github.com/AkshayEddula/BoardInfinityTask](https://board-infinity-task-48zi.vercel.app/)
+Project Link: [(https://board-infinity-task-48zi.vercel.app/](https://board-infinity-task-48zi.vercel.app/)
