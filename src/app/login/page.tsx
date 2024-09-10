@@ -26,7 +26,7 @@ export default function LoginPage() {
         e.preventDefault()
         try {
             await signIn(email, password);
-            router.push('/dashboard');
+            router.push('/');
         } catch (error) {
             console.error('Error signing in', error)
         }
